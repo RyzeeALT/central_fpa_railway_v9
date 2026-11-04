@@ -9,7 +9,7 @@
   {% if links %}
   <div class="tutorial-grid">
     {% for link in links %}
-    <article class="tutorial-card">
+    <article class="tutorial-card interactive-card" data-card-href="{{ link.url|e }}" role="link" tabindex="0" aria-label="Assistir {{ link.title|e }}">
       <div class="tutorial-media {{ 'has-image' if link.image_url else '' }}" {% if link.image_url %}style="background-image:url('{{ link.image_url|e }}')"{% endif %}>
         <span class="play-mark">▶</span>
       </div>

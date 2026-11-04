@@ -9,7 +9,7 @@
   {% if links %}
   <div class="bank-list">
     {% for link in links %}
-    <article class="bank-card">
+    <article class="bank-card interactive-card" data-card-href="{{ link.url|e }}" role="link" tabindex="0" aria-label="Acessar {{ link.title|e }}">
       <div class="bank-symbol">{{ '%02d'|format(loop.index) }}</div>
       <div class="bank-copy"><span class="card-category">BANCO / BASE</span><h2>{{ link.title }}</h2><p>{{ link.description }}</p><small>Atualizado em {{ link.updated_at.strftime('%d/%m/%Y') }}</small></div>
       <a class="bank-access" href="{{ link.url }}" target="_blank" rel="noopener noreferrer">Acessar ↗</a>

@@ -78,7 +78,11 @@ function applyTheme(theme, persist = true) {
   }
 }
 
-applyTheme(document.documentElement.dataset.theme || "light", false);
+let initialTheme = document.documentElement.dataset.theme;
+if (initialTheme !== "dark" && initialTheme !== "light") {
+  try { initialTheme = localStorage.getItem("fpa-theme"); } catch (_) {}
+}
+applyTheme(initialTheme === "dark" ? "dark" : "light", false);
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
     applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
@@ -86,3 +90,28 @@ if (themeToggle) {
 }
 
 updateSidebarAria();
+
+
+// Cards públicos: toda a superfície funciona como ação principal.
+document.querySelectorAll('[data-card-href]').forEach(card => {
+  const href = card.dataset.cardHref;
+  if (!href) return;
+
+  const openCard = () => {
+    const popup = window.open(href, '_blank');
+    if (popup) popup.opener = null;
+  };
+
+  card.addEventListener('click', event => {
+    if (event.target.closest('a, button, input, select, textarea, label')) return;
+    openCard();
+  });
+
+  card.addEventListener('keydown', event => {
+    if (event.target !== card) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openCard();
+    }
+  });
+});

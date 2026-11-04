@@ -108,3 +108,17 @@ html[data-theme="dark"] .theme-toggle:before{transform:translateX(14px)}
   .menu-toggle{width:32px;height:32px}
   .theme-toggle{width:37px;height:24px}
 }
+
+
+/* v14 · cards inteiros clicáveis + feedback visual */
+.interactive-card{cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background-color .18s ease;outline:none}
+.interactive-card:hover{transform:translateY(-3px);border-color:#b8d3e7;box-shadow:0 16px 38px rgba(16,46,99,.12)}
+.interactive-card:focus-visible{border-color:#3e92c8;box-shadow:0 0 0 3px rgba(18,101,163,.17),0 16px 38px rgba(16,46,99,.10)}
+.interactive-card .card-link,.interactive-card .bank-access,.interactive-card .tutorial-actions a{transition:transform .18s ease,background-color .18s ease,border-color .18s ease,color .18s ease}
+.interactive-card:hover .card-link,.interactive-card:hover .tutorial-actions a{color:#0b4f86;transform:translateX(2px)}
+.interactive-card:hover .bank-access{background:#eaf4fb;border-color:#b8d3e7}
+html[data-theme="dark"] .interactive-card:hover{border-color:#3d5d78;box-shadow:0 16px 40px rgba(0,0,0,.32);background:#182532}
+html[data-theme="dark"] .interactive-card:focus-visible{border-color:#5fa9df;box-shadow:0 0 0 3px rgba(98,174,232,.18),0 16px 40px rgba(0,0,0,.28)}
+html[data-theme="dark"] .interactive-card:hover .card-link,html[data-theme="dark"] .interactive-card:hover .tutorial-actions a{color:#91cef5}
+html[data-theme="dark"] .interactive-card:hover .bank-access{background:#1b3043;border-color:#3d5d78}
+@media (prefers-reduced-motion:reduce){.interactive-card,.interactive-card *{transition:none!important}.interactive-card:hover{transform:none}}
