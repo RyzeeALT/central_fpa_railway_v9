@@ -8,12 +8,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem('fpa-theme');
+        const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+      } catch (_) {}
+    })();
+  </script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="{{ 'admin-body' if request.path.startswith('/admin') else 'portal-body' }}">
 <header class="topbar portal-topbar">
   <div class="topbar-left">
-    {% if not request.path.startswith('/admin') %}<button class="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="portalSidebar" aria-expanded="false">Menu</button>{% endif %}
+    {% if not request.path.startswith('/admin') %}
+    <button class="menu-toggle" type="button" aria-label="Recolher ou abrir menu lateral" aria-controls="portalSidebar" aria-expanded="true" title="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    {% endif %}
     <a class="brand" href="{{ url_for('public.index') }}">
       <span class="brand-art" aria-hidden="true"><img src="{{ url_for('static', filename='img/unig-app-banner.png') }}" alt=""></span>
       <span class="brand-copy"><b>Central FP&amp;A</b><small>PLANEJAMENTO FINANCEIRO</small></span>
@@ -21,6 +34,10 @@
   </div>
   <div class="topbar-context">
     <span><b>Portal interno</b><small>UNIG · Planejamento Financeiro</small></span>
+    <button class="theme-toggle" type="button" aria-label="Alternar modo escuro" aria-pressed="false" title="Alternar tema">
+      <span class="theme-sun" aria-hidden="true">☀</span>
+      <span class="theme-moon" aria-hidden="true">☾</span>
+    </button>
   </div>
 </header>
 
