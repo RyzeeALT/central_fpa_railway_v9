@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Bancos mais utilizados · Central FP&A{% endblock %}
+{% block content %}
+<main class="content-page">
+  <section class="page-intro">
+    <div><span class="eyebrow blue">BASES DO SETOR</span><h1>Bancos mais utilizados</h1><p>Acesso rápido às principais bases, planilhas e repositórios usados na rotina do Planejamento Financeiro.</p></div>
+    <div class="page-count">{{ links|length }} acesso(s)</div>
+  </section>
+  {% if links %}
+  <div class="bank-list">
+    {% for link in links %}
+    <article class="bank-card">
+      <div class="bank-symbol">{{ '%02d'|format(loop.index) }}</div>
+      <div class="bank-copy"><span class="card-category">BANCO / BASE</span><h2>{{ link.title }}</h2><p>{{ link.description }}</p><small>Atualizado em {{ link.updated_at.strftime('%d/%m/%Y') }}</small></div>
+      <a class="bank-access" href="{{ link.url }}" target="_blank" rel="noopener noreferrer">Acessar ↗</a>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty dedicated-empty"><h3>Nenhum banco publicado ainda</h3><p>Cadastre os links na categoria “Bancos mais utilizados” pelo painel administrativo.</p></div>
+  {% endif %}
+</main>
+{% endblock %}

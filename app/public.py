@@ -7,20 +7,24 @@ from .storage import railway_volume_root
 public_bp = Blueprint("public", __name__)
 GAMMA_TITLES = ["Apresentações de resultados", "Apresentação de Resultados", "Status e Resultados de Projetos"]
 GAMMA_FALLBACK_URL = "https://gamma.app/docs/Status-e-Resultados-de-Projetos-Planejamento-Financeiro-e-Control-nf32vtoycjihai5"
+DEDICATED_CATEGORIES = ["Vídeos Tutoriais", "Tutoriais", "Bancos mais utilizados"]
 
 
 @public_bp.route("/")
 def index():
     q = request.args.get("q", "").strip()
     category_id = request.args.get("categoria", type=int)
-    query = Link.query.filter_by(is_active=True).join(Category).filter(~Link.title.in_(GAMMA_TITLES))
+    query = (Link.query.filter_by(is_active=True).join(Category)
+             .filter(~Link.title.in_(GAMMA_TITLES))
+             .filter(~Category.name.in_(DEDICATED_CATEGORIES)))
     if q:
         like = f"%{q}%"
         query = query.filter(or_(Link.title.ilike(like), Link.description.ilike(like), Category.name.ilike(like)))
     if category_id:
         query = query.filter(Link.category_id == category_id)
     links = query.order_by(Category.sort_order, Link.sort_order, Link.title).all()
-    categories = Category.query.order_by(Category.sort_order, Category.name).all()
+    categories = (Category.query.filter(~Category.name.in_(DEDICATED_CATEGORIES))
+                  .order_by(Category.sort_order, Category.name).all())
     return render_template("index.html", links=links, categories=categories, selected_category=category_id, search=q)
 
 
@@ -30,6 +34,27 @@ def resultados():
     gamma_url = (setting.gamma_url.strip() if setting and setting.gamma_url else GAMMA_FALLBACK_URL)
     gamma_embed_url = setting.gamma_embed_url.strip() if setting and setting.gamma_embed_url else ""
     return render_template("resultados.html", gamma_url=gamma_url, gamma_embed_url=gamma_embed_url)
+
+
+@public_bp.get("/tutoriais")
+def tutoriais():
+    categories = Category.query.filter(Category.name.in_(["Vídeos Tutoriais", "Tutoriais"])).all()
+    category_ids = [category.id for category in categories]
+    links = []
+    if category_ids:
+        links = (Link.query.filter(Link.is_active.is_(True), Link.category_id.in_(category_ids))
+                 .order_by(Link.sort_order, Link.title).all())
+    return render_template("tutoriais.html", links=links)
+
+
+@public_bp.get("/bancos")
+def bancos():
+    category = Category.query.filter_by(name="Bancos mais utilizados").first()
+    links = []
+    if category:
+        links = (Link.query.filter_by(is_active=True, category_id=category.id)
+                 .order_by(Link.sort_order, Link.title).all())
+    return render_template("bancos.html", links=links)
 
 
 @public_bp.get("/ferramenta/<int:link_id>")

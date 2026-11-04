@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Vídeos Tutoriais · Central FP&A{% endblock %}
+{% block content %}
+<main class="content-page">
+  <section class="page-intro">
+    <div><span class="eyebrow blue">APRENDIZADO RÁPIDO</span><h1>Vídeos Tutoriais</h1><p>Orientações práticas para os sistemas, rotinas e processos utilizados pelo Planejamento Financeiro.</p></div>
+    <div class="page-count">{{ links|length }} vídeo(s)</div>
+  </section>
+  {% if links %}
+  <div class="tutorial-grid">
+    {% for link in links %}
+    <article class="tutorial-card">
+      <div class="tutorial-media {{ 'has-image' if link.image_url else '' }}" {% if link.image_url %}style="background-image:url('{{ link.image_url|e }}')"{% endif %}>
+        <span class="play-mark">▶</span>
+      </div>
+      <div class="tutorial-content">
+        <span class="card-category">TUTORIAL</span><h2>{{ link.title }}</h2><p>{{ link.description }}</p>
+        <div class="tutorial-actions"><small>Atualizado em {{ link.updated_at.strftime('%d/%m/%Y') }}</small><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">Assistir ↗</a></div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty dedicated-empty"><h3>Nenhum tutorial publicado ainda</h3><p>Os vídeos cadastrados na categoria “Vídeos Tutoriais” aparecerão automaticamente aqui.</p></div>
+  {% endif %}
+</main>
+{% endblock %}

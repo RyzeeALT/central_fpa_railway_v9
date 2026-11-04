@@ -10,18 +10,43 @@
   <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-<header class="topbar">
-  <a class="brand" href="{{ url_for('public.index') }}">
-    <span class="brand-art" aria-hidden="true"><img src="{{ url_for('static', filename='img/unig-app-banner.png') }}" alt=""></span>
-    <span class="brand-copy"><b>Central de Links</b><small>PLANEJAMENTO FINANCEIRO · FP&amp;A</small></span>
-  </a>
-  <nav><a href="{{ url_for('public.index') }}">Central</a><a href="{{ url_for('public.resultados') }}">Resultados</a><a href="{{ url_for('admin.dashboard') if current_user.is_authenticated else url_for('admin.login') }}">Administração</a></nav>
+<body class="{{ 'admin-body' if request.path.startswith('/admin') else 'portal-body' }}">
+<header class="topbar portal-topbar">
+  <div class="topbar-left">
+    {% if not request.path.startswith('/admin') %}<button class="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="portalSidebar" aria-expanded="false">Menu</button>{% endif %}
+    <a class="brand" href="{{ url_for('public.index') }}">
+      <span class="brand-art" aria-hidden="true"><img src="{{ url_for('static', filename='img/unig-app-banner.png') }}" alt=""></span>
+      <span class="brand-copy"><b>Central FP&amp;A</b><small>PLANEJAMENTO FINANCEIRO</small></span>
+    </a>
+  </div>
+  <div class="topbar-context">
+    <span><b>Portal interno</b><small>UNIG · Planejamento Financeiro</small></span>
+  </div>
 </header>
+
+{% if not request.path.startswith('/admin') %}
+<aside class="portal-sidebar" id="portalSidebar">
+  <div class="sidebar-label">NAVEGAÇÃO</div>
+  <nav class="portal-nav">
+    <a class="{{ 'active' if request.endpoint in ['public.index', 'public.link_detail'] else '' }}" href="{{ url_for('public.index') }}"><span>Central</span><small>Ferramentas e acessos</small></a>
+    <a class="{{ 'active' if request.endpoint == 'public.resultados' else '' }}" href="{{ url_for('public.resultados') }}"><span>Resultados</span><small>Apresentação gerencial</small></a>
+    <a class="{{ 'active' if request.endpoint == 'public.tutoriais' else '' }}" href="{{ url_for('public.tutoriais') }}"><span>Vídeos Tutoriais</span><small>Guias e orientações</small></a>
+    <a class="{{ 'active' if request.endpoint == 'public.bancos' else '' }}" href="{{ url_for('public.bancos') }}"><span>Bancos mais utilizados</span><small>Bases do setor</small></a>
+  </nav>
+  <div class="portal-sidebar-bottom">
+    <a class="sidebar-admin-link" href="{{ url_for('admin.dashboard') if current_user.is_authenticated else url_for('admin.login') }}"><span>Administração</span><small>{{ current_user.name if current_user.is_authenticated else 'Acesso restrito' }}</small></a>
+    <div class="sidebar-signature"><span>FP&amp;A · UNIG</span><small>Central interna de trabalho</small></div>
+  </div>
+</aside>
+<div class="sidebar-overlay" data-sidebar-close></div>
+{% endif %}
+
+<div class="{{ 'admin-page-shell' if request.path.startswith('/admin') else 'portal-page-shell' }}">
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
 {% endwith %}
 {% block content %}{% endblock %}
 <footer>Central FP&amp;A · UNIG <span>© {{ current_year }}</span></footer>
+</div>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body></html>

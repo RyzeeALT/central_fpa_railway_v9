@@ -29,7 +29,7 @@ python -c "import secrets; print(secrets.token_urlsafe(48))"
 No serviço web, em Settings > Deploy, defina o **Pre-Deploy Command**:
 
 ```bash
-python -m flask --app app.py init-db && python -m flask --app app.py bootstrap-admin
+python -m flask --app run.py init-db && python -m flask --app run.py bootstrap-admin
 ```
 
 Esse comando roda dentro da infraestrutura Railway, com acesso à rede privada do PostgreSQL.
@@ -45,7 +45,7 @@ Após o primeiro deploy confirmar que o admin foi criado, remova `BOOTSTRAP_ADMI
 Se a Railway não detectar o Procfile automaticamente, use em Settings > Deploy > Start Command:
 
 ```bash
-gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120
+gunicorn run:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120
 ```
 
 ## 5. Healthcheck

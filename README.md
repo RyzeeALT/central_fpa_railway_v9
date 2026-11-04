@@ -1,6 +1,8 @@
 # Central de Links - FP&A
 
-Portal Flask para centralizar ferramentas, documentos, sistemas e apresentações do Planejamento Financeiro.
+Portal Flask para centralizar ferramentas, documentos, sistemas, vídeos tutoriais, bancos operacionais e apresentações do Planejamento Financeiro.
+
+A navegação pública usa uma sidebar com páginas dedicadas para **Central**, **Resultados**, **Vídeos Tutoriais** e **Bancos mais utilizados**.
 
 ## Desenvolvimento local
 

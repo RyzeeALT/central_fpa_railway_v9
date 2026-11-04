@@ -141,12 +141,22 @@ def create_app():
                 ("Planejamento", "chart", 30),
                 ("Sistemas", "monitor", 40),
                 ("Planilhas e bancos", "table", 50),
-                ("Tutoriais", "play", 60),
                 ("Laboratório / Beta", "flask", 70),
             ]
             for name, icon, order in categories:
                 db.session.add(Category(name=name, icon=icon, sort_order=order))
             db.session.commit()
+        # Áreas dedicadas do portal (criadas também em bancos já existentes).
+        dedicated_categories = [
+            ("Vídeos Tutoriais", "play", 60),
+            ("Bancos mais utilizados", "database", 55),
+        ]
+        for name, icon, order in dedicated_categories:
+            category = Category.query.filter_by(name=name).first()
+            if not category:
+                db.session.add(Category(name=name, icon=icon, sort_order=order))
+        db.session.commit()
+
         if Link.query.count() == 0:
             seeds = [
                 ("Requisição de Compra", "Compras", "Acesso ao sistema de requisições de compra."),
@@ -159,16 +169,39 @@ def create_app():
                 ("Sistema de Agendamento 105", "Sistemas", "Acesso ao sistema de agendamento 105."),
                 ("Painel Executivo", "Planejamento", "Painéis e indicadores executivos."),
                 ("Vio", "Sistemas", "Acesso à ferramenta Vio."),
-                ("Banco de Requisição de Compra", "Planilhas e bancos", "Planilha vinculada à requisição de compra."),
+                ("Banco de Requisição de Compra", "Bancos mais utilizados", "Planilha vinculada à requisição de compra."),
                 ("Repositório de Contas a Pagar", "Planilhas e bancos", "Banco de dados de contas a pagar."),
-                ("Banco de Viabilidade de Novos Cursos", "Planilhas e bancos", "Planilhas de viabilidade."),
+                ("Banco de Viabilidade de Novos Cursos", "Bancos mais utilizados", "Planilhas de viabilidade."),
                 ("Sistema de Atendimento", "Sistemas", "Acesso ao sistema de atendimento."),
-                ("Vídeos tutoriais", "Tutoriais", "Materiais em vídeo para orientar os usuários."),
+                ("Vídeos tutoriais", "Vídeos Tutoriais", "Materiais em vídeo para orientar os usuários."),
                 ("Central de Links CRA", "Sistemas", "Acesso à central de links CRA."),
             ]
             cats = {c.name: c.id for c in Category.query.all()}
             for idx, (title, cat, description) in enumerate(seeds, start=1):
                 db.session.add(Link(title=title, category_id=cats[cat], description=description, url="", is_active=False, sort_order=idx * 10))
+            db.session.commit()
+
+        # Migração leve para instalações já existentes: move links claramente identificados
+        # para as novas áreas dedicadas, sem alterar URLs ou conteúdo cadastrado.
+        bank_category = Category.query.filter_by(name="Bancos mais utilizados").first()
+        tutorial_category = Category.query.filter_by(name="Vídeos Tutoriais").first()
+        legacy_tutorial_category = Category.query.filter_by(name="Tutoriais").first()
+        moved = False
+        if bank_category:
+            for item in Link.query.filter(Link.title.ilike("Banco de %")).all():
+                if item.category_id != bank_category.id:
+                    item.category_id = bank_category.id
+                    moved = True
+        if tutorial_category and legacy_tutorial_category:
+            for item in Link.query.filter_by(category_id=legacy_tutorial_category.id).all():
+                if item.category_id != tutorial_category.id:
+                    item.category_id = tutorial_category.id
+                    moved = True
+            db.session.flush()
+            if Link.query.filter_by(category_id=legacy_tutorial_category.id).count() == 0:
+                db.session.delete(legacy_tutorial_category)
+                moved = True
+        if moved:
             db.session.commit()
 
         starter_images = {

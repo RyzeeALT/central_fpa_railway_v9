@@ -175,7 +175,7 @@ def edit_link(link_id=None):
     before = snapshot_link(link) if link_id else None
     categories = Category.query.order_by(Category.sort_order, Category.name).all()
     if not categories:
-        flash("Crie pelo menos uma categoria antes de cadastrar uma ferramenta.", "warning")
+        flash("Crie pelo menos uma categoria antes de cadastrar um acesso.", "warning")
         return redirect(url_for("admin.categories"))
     if request.method == "POST":
         title = request.form.get("title", "").strip()
@@ -184,11 +184,11 @@ def edit_link(link_id=None):
         image_file = request.files.get("image_file")
         category_id = request.form.get("category_id", type=int)
         if not title:
-            flash("Informe o nome da ferramenta.", "danger")
+            flash("Informe o nome do acesso.", "danger")
         elif not db.session.get(Category, category_id):
             flash("Selecione uma categoria válida.", "danger")
         elif not valid_url(url) or not valid_image_reference(image_url):
-            flash("A URL da ferramenta deve começar com https:// ou http://. A imagem pode ser uma URL externa ou um arquivo local do portal.", "danger")
+            flash("A URL do acesso deve começar com https:// ou http://. A imagem pode ser uma URL externa ou um arquivo local do portal.", "danger")
         else:
             try:
                 uploaded_image = save_tool_image(image_file)
@@ -214,7 +214,7 @@ def edit_link(link_id=None):
             db.session.flush()
             audit("atualização" if link_id else "criação", "link", link.id, link.title, before, snapshot_link(link))
             db.session.commit()
-            flash("Ferramenta salva. A central pública já reflete a alteração.", "success")
+            flash("Acesso salvo. O portal público já reflete a alteração.", "success")
             return redirect(url_for("admin.links"))
     return render_template("admin/link_form.html", link=link, categories=categories, storage_backend=storage_backend())
 
@@ -225,7 +225,7 @@ def toggle_link(link_id):
     link = db.get_or_404(Link, link_id)
     before = snapshot_link(link)
     if not link.is_active and not link.url:
-        flash("Cadastre um endereço antes de ativar a ferramenta.", "warning")
+        flash("Cadastre um endereço antes de ativar o acesso.", "warning")
         return redirect(url_for("admin.links"))
     link.is_active = not link.is_active
     link.updated_by_id = current_user.id
@@ -244,7 +244,7 @@ def delete_link(link_id):
     delete_stored_image(link.image_url)
     db.session.delete(link)
     db.session.commit()
-    flash("Ferramenta removida.", "success")
+    flash("Acesso removido.", "success")
     return redirect(url_for("admin.links"))
 
 
