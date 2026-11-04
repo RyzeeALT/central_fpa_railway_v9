@@ -122,3 +122,102 @@ html[data-theme="dark"] .interactive-card:focus-visible{border-color:#5fa9df;box
 html[data-theme="dark"] .interactive-card:hover .card-link,html[data-theme="dark"] .interactive-card:hover .tutorial-actions a{color:#91cef5}
 html[data-theme="dark"] .interactive-card:hover .bank-access{background:#1b3043;border-color:#3d5d78}
 @media (prefers-reduced-motion:reduce){.interactive-card,.interactive-card *{transition:none!important}.interactive-card:hover{transform:none}}
+
+/* v15 · dark mode completo em login, administração e resultados */
+html[data-theme="dark"] .admin-body,
+html[data-theme="dark"] .admin-page-shell,
+html[data-theme="dark"] .login-shell,
+html[data-theme="dark"] .results-page,
+html[data-theme="dark"] .error-page{
+  background:#0d1520;
+  color:var(--ink);
+}
+
+html[data-theme="dark"] .login-card{
+  background:#151f2b;
+  border-color:var(--line);
+  box-shadow:0 18px 46px rgba(0,0,0,.32);
+}
+html[data-theme="dark"] .login-card h1,
+html[data-theme="dark"] .login-card label{
+  color:#edf4fb;
+}
+html[data-theme="dark"] .login-card p{color:#9bacc0}
+html[data-theme="dark"] .login-card input{
+  background:#0f1924;
+  color:#edf4fb;
+  border-color:#314257;
+  caret-color:#79bdec;
+}
+html[data-theme="dark"] .login-card input:focus{
+  border-color:#5fa9df;
+  outline:2px solid rgba(95,169,223,.18);
+}
+html[data-theme="dark"] .login-card .back-link{color:#79bdec}
+
+html[data-theme="dark"] .admin-layout{color:var(--ink)}
+html[data-theme="dark"] .admin-content{color:var(--ink)}
+html[data-theme="dark"] .stats strong{color:#8cc9f0}
+html[data-theme="dark"] .secondary{
+  background:#151f2b;
+  color:#c5d2df;
+  border-color:#314257;
+}
+html[data-theme="dark"] .secondary:hover{background:#1b2938}
+html[data-theme="dark"] pre{background:#0f1924;color:#cbd7e4;border:1px solid var(--line)}
+html[data-theme="dark"] details summary{color:#79bdec}
+html[data-theme="dark"] .status.off{background:#263442;color:#aebdcc}
+html[data-theme="dark"] .status.on{background:#153829;color:#79d4a2}
+html[data-theme="dark"] .form-grid label,
+html[data-theme="dark"] .inline-form label{color:#dce6f1}
+html[data-theme="dark"] .form-grid small{color:#899bad}
+
+html[data-theme="dark"] .results-page{
+  background:linear-gradient(180deg,#101a26 0,#0d1520 380px);
+}
+html[data-theme="dark"] .results-header h1{color:#edf4fb}
+html[data-theme="dark"] .results-header p{color:#9bacc0}
+html[data-theme="dark"] .results-viewer{
+  background:#151f2b;
+  border-color:#2b3b4e;
+  box-shadow:0 18px 50px rgba(0,0,0,.28);
+}
+html[data-theme="dark"] .results-viewer-topbar{
+  background:#111c28;
+  border-bottom-color:#28394c;
+  color:#aebdcc;
+}
+html[data-theme="dark"] .results-viewer-topbar small{color:#8294a8}
+html[data-theme="dark"] .viewer-status{color:#9fc8e7}
+html[data-theme="dark"] .gamma-frame-wrap{background:#0f1822}
+html[data-theme="dark"] .gamma-frame-wrap iframe{
+  background:#0f1822;
+  color-scheme:dark;
+}
+html[data-theme="dark"] .results-helpbar{
+  background:#121d29;
+  border-top-color:#28394c;
+  color:#8fa1b5;
+}
+html[data-theme="dark"] .results-placeholder{
+  background:radial-gradient(circle at 50% 20%,#182c3d 0,#151f2b 58%);
+  border-color:var(--line);
+}
+html[data-theme="dark"] .results-placeholder h2{color:#edf4fb}
+html[data-theme="dark"] .results-placeholder p{color:#9bacc0}
+
+/* evita flash claro ao navegar quando o tema salvo é escuro */
+html[data-theme="dark"]{background:#0d1520}
+
+/* elementos administrativos que ainda tinham branco fixo */
+html[data-theme="dark"] .panel,
+html[data-theme="dark"] .detail-card,
+html[data-theme="dark"] .login-card,
+html[data-theme="dark"] .table-wrap{background:#151f2b}
+html[data-theme="dark"] .detail-card h1{color:#edf4fb}
+html[data-theme="dark"] .detail-card p{color:#9bacc0}
+html[data-theme="dark"] .detail-info>div{background:#101923;border-color:var(--line)}
+
+/* O conteúdo dentro do iframe do Gamma é controlado pelo próprio Gamma.
+   O portal escurece todo o entorno e o fundo de carregamento, mas não força
+   estilos dentro de um iframe de outro domínio. */
