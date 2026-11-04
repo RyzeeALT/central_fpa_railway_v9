@@ -1,0 +1,23 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Portal · Central FP&A{% endblock %}
+{% block admin_content %}
+<div class="admin-title">
+  <div><span class="eyebrow blue">CONFIGURAÇÃO</span><h1>Portal e Resultados</h1><p>Gerencie a apresentação do Gamma e confira a estrutura usada em produção.</p></div>
+  <a class="secondary" href="{{ url_for('public.resultados') }}" target="_blank" rel="noopener">Ver página pública ↗</a>
+</div>
+<form class="panel form-grid compact-form" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label class="wide">Link principal do Gamma
+    <input type="url" name="gamma_url" value="{{ setting.gamma_url or '' }}" placeholder="https://gamma.app/docs/..."><small>É o endereço usado pelo botão “Abrir no Gamma”.</small>
+  </label>
+  <label class="wide">Código de incorporação ou URL do embed
+    <textarea name="gamma_embed_url" rows="5" placeholder='<iframe src="https://...gamma.app/...">...</iframe>'>{{ setting.gamma_embed_url or '' }}</textarea>
+    <small>No Gamma: Compartilhar → Incorporar → Permitir acesso público → copie o iframe inteiro. O portal extrai o endereço automaticamente.</small>
+  </label>
+  <div class="wide production-note">
+    <b>Armazenamento de imagens</b><span>{{ 'Volume Railway' if storage_backend == 'railway-volume' else 'Local (desenvolvimento)' }}</span>
+    <p>Localmente os uploads ficam em <code>static/uploads/tools</code>. Na Railway, anexe um Volume ao serviço web e os arquivos serão persistidos nele.</p>
+  </div>
+  <div class="wide form-actions"><button class="primary">Salvar configurações</button></div>
+</form>
+{% endblock %}

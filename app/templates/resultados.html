@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Resultados · FP&A{% endblock %}
+{% block content %}
+<main class="results-page">
+  <section class="results-header container">
+    <div>
+      <span class="eyebrow blue">PLANEJAMENTO FINANCEIRO</span>
+      <h1>Apresentação de Resultados</h1>
+      <p>Acompanhe o status e os resultados dos projetos do Planejamento Financeiro sem sair da Central FP&amp;A.</p>
+    </div>
+    <a class="results-open" href="{{ gamma_url }}" target="_blank" rel="noopener noreferrer">Abrir no Gamma ↗</a>
+  </section>
+
+  <section class="results-viewer container">
+    <div class="results-viewer-topbar">
+      <div class="viewer-status"><span></span> {{ 'Visualização integrada' if gamma_embed_url else 'Apresentação disponível' }}</div>
+      <small>{{ 'Conteúdo incorporado do Gamma' if gamma_embed_url else 'O código de incorporação ainda não foi configurado' }}</small>
+    </div>
+    {% if gamma_embed_url %}
+      <div class="gamma-frame-wrap">
+        <iframe
+          src="{{ gamma_embed_url }}"
+          title="Apresentação de Resultados do Planejamento Financeiro"
+          loading="lazy"
+          allow="fullscreen; clipboard-read; clipboard-write"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      </div>
+      <div class="results-helpbar">Se o Gamma bloquear a visualização, abra a apresentação original em uma nova aba.</div>
+    {% else %}
+      <div class="results-placeholder">
+        <div class="results-placeholder-icon">↗</div>
+        <span class="eyebrow blue">GAMMA</span>
+        <h2>Visualização integrada aguardando configuração</h2>
+        <p>A apresentação já pode ser acessada normalmente. Para exibi-la aqui dentro, um administrador precisa colar o código de incorporação gerado pelo Gamma.</p>
+        <a class="primary" href="{{ gamma_url }}" target="_blank" rel="noopener noreferrer">Abrir apresentação ↗</a>
+      </div>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}
