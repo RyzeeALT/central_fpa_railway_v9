@@ -221,3 +221,95 @@ html[data-theme="dark"] .detail-info>div{background:#101923;border-color:var(--l
 /* O conteúdo dentro do iframe do Gamma é controlado pelo próprio Gamma.
    O portal escurece todo o entorno e o fundo de carregamento, mas não força
    estilos dentro de um iframe de outro domínio. */
+
+
+/* v16 · correções finais do dark mode administrativo + status */
+.status-cell{
+  min-width:124px;
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
+  white-space:nowrap;
+  vertical-align:middle;
+}
+.status.beta-status{
+  background:#fff3d8;
+  color:#9b6713;
+}
+
+/* elimina superfícies claras fixas dentro do painel administrativo */
+html[data-theme="dark"] .image-fields{
+  background:#111c28;
+  border-color:#314257;
+}
+html[data-theme="dark"] .image-fields label,
+html[data-theme="dark"] .image-preview span,
+html[data-theme="dark"] .checks label{
+  color:#dce6f1;
+}
+html[data-theme="dark"] .image-preview img{
+  border-color:#314257;
+  background:#0f1924;
+}
+html[data-theme="dark"] .filter-form input,
+html[data-theme="dark"] .filter-form select,
+html[data-theme="dark"] .category-edit input,
+html[data-theme="dark"] .reset-pass input,
+html[data-theme="dark"] .inline-form input{
+  background:#0f1924;
+  color:#e8eef6;
+  border-color:#314257;
+}
+html[data-theme="dark"] .filter-form select option,
+html[data-theme="dark"] .form-grid select option{
+  background:#101923;
+  color:#e8eef6;
+}
+html[data-theme="dark"] input[type="file"]{
+  background:#0f1924;
+  color:#cbd7e4;
+  border-color:#314257;
+}
+html[data-theme="dark"] input[type="file"]::file-selector-button{
+  background:#24374a;
+  color:#edf4fb;
+  border:0;
+  border-right:1px solid #3a5066;
+  padding:9px 12px;
+  margin:-12px 12px -12px -12px;
+  cursor:pointer;
+}
+html[data-theme="dark"] input[type="file"]::file-selector-button:hover{
+  background:#2d455c;
+}
+html[data-theme="dark"] input[type="checkbox"]{
+  accent-color:#62aee8;
+}
+html[data-theme="dark"] .status.beta-status{
+  background:#4a3816;
+  color:#f4cf72;
+}
+html[data-theme="dark"] .audit-type{
+  background:#183149;
+  color:#9cccef;
+}
+html[data-theme="dark"] .flash.success{
+  background:#153829;
+  color:#79d4a2;
+}
+
+/* mantém a coluna de status legível mesmo em tabelas compactas */
+.admin-content table td.status-cell{
+  padding-top:12px;
+  padding-bottom:12px;
+}
+@media(max-width:850px){
+  .status-cell{min-width:116px}
+}
