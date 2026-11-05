@@ -25,6 +25,7 @@ function updateSidebarAria() {
 function setMobileSidebar(open) {
   if (!sidebar) return;
   document.body.classList.toggle("sidebar-open", open);
+  if (sidebarOverlay) sidebarOverlay.setAttribute("aria-hidden", open ? "false" : "true");
   updateSidebarAria();
 }
 
@@ -114,4 +115,12 @@ document.querySelectorAll('[data-card-href]').forEach(card => {
       openCard();
     }
   });
+});
+
+// Fecha o drawer mobile com Escape.
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && document.body.classList.contains("sidebar-open")) {
+    setMobileSidebar(false);
+    menuToggle?.focus();
+  }
 });
